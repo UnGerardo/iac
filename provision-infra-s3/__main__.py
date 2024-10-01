@@ -3,6 +3,9 @@ import pulumi_aws as aws
 import os
 import mimetypes
 
+config = pulumi.Config();
+websiteDir = config.require('siteDir')
+
 bucket = aws.s3.BucketV2('web-bucket')
 
 bucketWebConfig = aws.s3.BucketWebsiteConfigurationV2('s3-website',
@@ -17,9 +20,8 @@ bucketPublicAccessBlock = aws.s3.BucketPublicAccessBlock('public-access-block',
   block_public_acls=False
 )
 
-contentDir = 'website'
-for file in os.listdir(contentDir):
-  filePath = os.path.join(contentDir, file)
+for file in os.listdir(websiteDir):
+  filePath = os.path.join(websiteDir, file)
   mimetype, _ = mimetypes.guess_type(filePath)
   obj = aws.s3.BucketObject(file,
     bucket=bucket.id,

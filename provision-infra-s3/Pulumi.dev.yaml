@@ -1,2 +1,3 @@
 config:
   aws:region: us-west-1
+  provision-infra-s3:siteDir: www
